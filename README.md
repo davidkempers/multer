@@ -100,6 +100,7 @@ app.use('/publish', upload.any(), function (req, res, next) {
   // req.files is array of any file uploaded
   // each file will have digest, compressions and size metadata
 })
+```
 
 ## API
 

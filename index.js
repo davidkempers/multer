@@ -1,8 +1,10 @@
 var makeError = require('./lib/make-error')
 var makeMiddleware = require('./lib/make-middleware')
+var preprocess = require('./lib/preprocess')
 
 var diskStorage = require('./storage/disk')
 var memoryStorage = require('./storage/memory')
+var cloudStorage = require('./storage/cloud')
 
 function allowAll (req, file, cb) {
   cb(null, true)
@@ -13,12 +15,15 @@ function Multer (options) {
     this.storage = options.storage
   } else if (options.dest) {
     this.storage = diskStorage({ destination: options.dest })
+  } else if (options.cloud) {
+    this.storage = options.cloud
   } else {
     this.storage = memoryStorage()
   }
 
   this.limits = options.limits
   this.fileFilter = options.fileFilter || allowAll
+  this.preprocessors = options.preprocessors
 }
 
 Multer.prototype._makeMiddleware = function (fields, fileStrategy) {
@@ -72,7 +77,8 @@ Multer.prototype.any = function () {
       limits: this.limits,
       storage: this.storage,
       fileFilter: this.fileFilter,
-      fileStrategy: 'ARRAY'
+      fileStrategy: 'ARRAY',
+      preprocessors: this.preprocessors
     }
   }
 
@@ -92,5 +98,7 @@ function multer (options) {
 }
 
 module.exports = multer
+module.exports.preprocess = preprocess
 module.exports.diskStorage = diskStorage
 module.exports.memoryStorage = memoryStorage
+module.exports.cloudStorage = cloudStorage

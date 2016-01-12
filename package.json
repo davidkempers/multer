@@ -22,10 +22,17 @@
     "append-field": "^0.1.0",
     "busboy": "^0.2.11",
     "concat-stream": "^1.5.0",
+    "crc32-stream": "^0.4.0",
+    "digest-stream": "^0.2.2",
+    "length-stream": "^0.1.1",
     "mkdirp": "^0.5.1",
+    "node-targz": "0.0.3",
     "object-assign": "^3.0.0",
     "on-finished": "^2.3.0",
+    "seek-bzip": "^1.0.5",
+    "tar": "^2.2.1",
     "type-is": "^1.6.4",
+    "unbzip2-stream": "^1.0.8",
     "xtend": "^4.0.0"
   },
   "devDependencies": {

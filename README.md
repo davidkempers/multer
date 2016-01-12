@@ -58,6 +58,48 @@ app.post('/profile', upload.array(), function (req, res, next) {
   // req.body contains the text fields
 })
 ```
+Using a cloud storage option with preprocessing
+
+```javascript
+
+// See pkgcloud documentation for more information
+var client = pkgcloud.storage.createClient({
+  provider: 'amazon',
+  keyId: '', // access key id
+  key: '', // secret key
+  region: '' // region
+});
+
+
+function destination(req, file, cb) {
+    cb(null, {
+        container: 'test',
+        remote: file.originalname
+    })
+}
+
+var storage = multer.cloudStorage({
+    client: client,
+    destination: destination
+})
+
+var upload = multer({
+    storage: storage,
+    preprocessors: [
+      extract(),
+      size(),
+      digest('md5', 'hex'),
+      digest('crc', 'hex'),
+      compress('deflate', { level:9}),
+      size(),
+      digest('md5', 'hex')
+    ]
+});
+
+app.use('/publish', upload.any(), function (req, res, next) {
+  // req.files is array of any file uploaded
+  // each file will have digest, compressions and size metadata
+})
 
 ## API
 
